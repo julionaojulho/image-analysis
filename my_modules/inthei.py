@@ -1,6 +1,7 @@
 """Return interfacial height of a multiphaseflow image."""
 
-from numpy import zeros, ones, floor_divide, array, min
+#from numpy import zeros, ones, floor_divide, array, min
+import numpy as np
 from scipy import ndimage as ndi
 from skimage import color
 from skimage.io import imread, ImageCollection
@@ -24,8 +25,8 @@ def im_start(pic,path,box):
 
 def bg_im(im):
     """Return image background."""
-    bg = zeros(im.shape,dtype=int)
-    bg[:,0:floor_divide(im.shape[1],2)] = 255
+    bg = np.zeros(im.shape,dtype=int)
+    bg[:,0:np.floor_divide(im.shape[1],2)] = 255
     return(bg)
 
 def bg_removal(im_mat):
@@ -43,15 +44,17 @@ def im_proc(im):
     im_bin = im > th
     return(ndi.binary_fill_holes(
                 morphology.closing(
-                im_bin,ones((3,3)))))
+                im_bin,np.ones((3,3)))))
 
 def interface_height(im,scale):
     """Return a dictionary of interfacial heights."""
-    D = {n: array([i for i, j in enumerate(k) if j]) for n, k in enumerate(im)}
-    height = []#np.array([np.amin(i) for i in list(D.values()) if list(D.values())])
+    D = {n:np.array([i for i, j in enumerate(k) if j]) for n, k in enumerate(im)}
+    height = []
     for v in D.values():
         if len(v) == 0:
             height.append(height[-1])
         else:
-            height.append(min(v))
+            height.append(np.min(v))
     return(D,height)
+
+"""Fourier analysis bit lacking"""
