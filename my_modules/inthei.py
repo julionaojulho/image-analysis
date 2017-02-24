@@ -9,11 +9,11 @@ from skimage import morphology
 from skimage.filters import threshold_otsu
 
 
-def imread_x(f,path,box=(0,792,0,85)):
+def imread_x(f,path,ext='.jpg',box=(0,792,0,85)):
     """Return a collection of grayscale cropped images."""
     return color.rgb2gray(imread(
-            r'D:\Mestrado\Imagens\Antigas'
-            + path + '(%d).jpg'%f)[box[0]:box[1],
+            r'D:\Mestrado\Imagens'
+            + path + '(%d)'%f + ext)[box[0]:box[1],
                                    box[2]:box[3]])
 
 def im_start(pic,path,box):

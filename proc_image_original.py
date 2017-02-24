@@ -1,6 +1,6 @@
 def imread_x(f,path,box=(0,792,0,85)):
     return color.rgb2gray(io.imread(
-            r'D:\Mestrado\Imagens\Antigas'
+            r'D:\Mestrado\Imagens'
             + path + '(%d).jpg'%f)[box[0]:box[1],
                                    box[2]:box[3]])
 
