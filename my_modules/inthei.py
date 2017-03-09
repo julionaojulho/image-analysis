@@ -51,7 +51,9 @@ def interface_height(im,scale):
     D = {n:np.array([i for i, j in enumerate(k) if j]) for n, k in enumerate(im)}
     height = []
     for v in D.values():
-        if len(v) == 0:
+        if len(v) == 0 and height == []:
+            height.append(0)
+        elif len(v) == 0:
             height.append(height[-1])
         else:
             height.append(np.min(v))
