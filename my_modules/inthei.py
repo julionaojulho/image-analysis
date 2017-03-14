@@ -7,8 +7,10 @@ from skimage import color
 from skimage.io import imread, ImageCollection
 from skimage import morphology
 from skimage.filters import threshold_otsu
+from numba import autojit
 
 
+@autojit
 def imread_x(f,path,ext='.jpg',box=(0,792,0,85)):
     """Return a collection of grayscale cropped images."""
     return color.rgb2gray(imread(
@@ -16,6 +18,7 @@ def imread_x(f,path,ext='.jpg',box=(0,792,0,85)):
             + path + '(%d)'%f + ext)[box[0]:box[1],
                                    box[2]:box[3]])
 
+@autojit
 def im_start(pic,path,box):
     """Return an array of images."""
     im_matrix = ImageCollection(
@@ -23,12 +26,14 @@ def im_start(pic,path,box):
             load_func=imread_x)
     return(im_matrix.concatenate())
 
+@autojit
 def bg_im(im):
     """Return image background."""
     bg = np.zeros(im.shape,dtype=int)
     bg[:,0:np.floor_divide(im.shape[1],2)] = 255
     return(bg)
 
+@autojit
 def bg_removal(im_mat):
     """Remove the background of an image."""
     bg = bg_im(im_mat[0])
@@ -38,6 +43,7 @@ def bg_removal(im_mat):
     no_bg[no_bg < 0] = 0
     return(no_bg)
 
+@autojit
 def im_proc(im):
     """Apply series of morphological procedures on image."""
     th = threshold_otsu(im)
